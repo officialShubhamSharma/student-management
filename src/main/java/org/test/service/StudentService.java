@@ -48,17 +48,22 @@ public class StudentService {
     }
 
     public void updateStudent(Student student, String phoneNumber) {
-        if(studentHashMap.containsKey(phoneNumber)) {
-            Student studentToUpdate = studentHashMap.get(phoneNumber);
-            studentToUpdate.setAge(student.getAge());
-            studentToUpdate.setName(student.getName());
-            studentToUpdate.setClassName(student.getClassName());
-            studentToUpdate.setPhoneNumber(student.getPhoneNumber());
-            studentHashMap.remove(phoneNumber);
-            studentHashMap.put(student.getPhoneNumber(),studentToUpdate);
+        Student existingStudent = studentHashMap.get(phoneNumber);
+        if (existingStudent == null) {
+            throw new RuntimeException("No entry present with phone number: " + phoneNumber);
         }
-        else{
-            throw new RuntimeException("No entry present with phone number : "+phoneNumber);
+        updateStudentDetails(existingStudent, student);
+        if (!phoneNumber.equals(student.getPhoneNumber())) {
+            studentHashMap.remove(phoneNumber);
+            studentHashMap.put(student.getPhoneNumber(), existingStudent);
         }
     }
+
+    private void updateStudentDetails(Student target, Student source) {
+        target.setAge(source.getAge());
+        target.setName(source.getName());
+        target.setClassName(source.getClassName());
+        target.setPhoneNumber(source.getPhoneNumber());
+    }
+
 }

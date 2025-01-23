@@ -19,7 +19,7 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/getAll")
+    @GetMapping("/get-all")
     public ResponseEntity<List<Student>> getStudents(){
         return ResponseEntity.ok().body(studentService.getAllStudents());
     }
